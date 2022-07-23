@@ -5,9 +5,9 @@ import 'package:xgrid_test/models/themingProvider.dart';
 import 'package:xgrid_test/theme/style.dart';
 import 'package:provider/provider.dart';
 
-Future<void> main() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool? login = prefs.getBool("darkMode");
+void main() {
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // bool? login = prefs.getBool("darkMode");
 
   runApp(
     MultiProvider(
@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
           await themeChangeProvider.darkThemePreference.getTheme();
     }
 
-    print('sds');
     getCurrentAppTheme();
   }
 
@@ -71,7 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           FlatButton(
             onPressed: () {
-              themeChange.darkTheme = false;
+              print(themeChange.darkTheme);
+              themeChange.darkTheme = !themeChange.darkTheme;
             },
             child: Padding(
               padding: EdgeInsets.only(right: 10),
