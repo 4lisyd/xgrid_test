@@ -5,13 +5,18 @@ import 'package:xgrid_test/models/themingProvider.dart';
 import 'package:xgrid_test/theme/style.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  // SharedPreferences prefs = await SharedPreferences.getInstance();
-  // bool? login = prefs.getBool("darkMode");
+Future<void> main() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool? login = prefs.getBool("darkMode");
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => DarkThemeProvider()),
-  ]));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => DarkThemeProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,6 +32,7 @@ class MyApp extends StatelessWidget {
           await themeChangeProvider.darkThemePreference.getTheme();
     }
 
+    print('sds');
     getCurrentAppTheme();
   }
 
@@ -39,7 +45,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: appTheme(themeChangeProvider.darkTheme),
+      theme: appTheme(context.watch<DarkThemeProvider>().darkTheme),
       home: const MyHomePage(),
     );
   }
@@ -55,7 +61,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    var darkThemeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeChange = Provider.of<DarkThemeProvider>(context);
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -65,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           FlatButton(
             onPressed: () {
-              darkThemeProvider.darkTheme = !darkThemeProvider.darkTheme;
+              themeChange.darkTheme = false;
             },
             child: Padding(
               padding: EdgeInsets.only(right: 10),
